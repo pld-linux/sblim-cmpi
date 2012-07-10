@@ -2,7 +2,7 @@ Summary:	SBLIM CMPI Development Package
 Summary(pl.UTF-8):	Pakiet programistyczny SBLIM SMPI
 Name:		sblim-cmpi
 Version:	2.0.2
-Release:	1
+Release:	2
 License:	Eclipse Public License v1.0
 Group:		Libraries
 Source0:	http://downloads.sourceforge.net/sblim/%{name}-devel-%{version}.tar.bz2
@@ -26,32 +26,60 @@ CMPI niezbędne do kompilacji dostarczycieli CMPI napisanych w języku
 C.
 
 Pakiet zawiera także wrapper C++ CMPI, składający się z plików
-nagłówkowych i bibliotekę współdzieloną z implementacją obsługi C++.
+nagłówkowych i bibliotekę współdzieloną z implementacją wsparcia C++.
 
 %package devel
 Summary:	Header files for SBLIM CMPI
 Summary(pl.UTF-8):	Pliki nagłówkowe SBLIM CMPI
 Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
-Requires:	libstdc++-devel
 
 %description devel
-Header files for SBLIM CMPI.
+Header files for SBLIM CMPI, needed for compilation of CMPI providers
+written in the C programming language.
 
 %description devel -l pl.UTF-8
-Pliki nagłówkowe SBLIM CMPI.
+Pliki nagłówkowe SBLIM CMPI, potrzebne do kompilacji dostarczycieli
+CMPI napisanych w języku C.
 
-%package static
-Summary:	Static SBLIM CMPI library
-Summary(pl.UTF-8):	Statyczna biblioteka SBLIM CMPI
+%package cpp
+Summary:	CMPI C++ wrapper library
+Summary(pl.UTF-8):	Biblioteka wrappera C++ do CMPI
+Group:		Libraries
+Obsoletes:	sblim-cmpi
+
+%description cpp
+CMPI C++ Wrapper - shared library implementing the C++ support.
+
+%description cpp -l pl.UTF-8
+Wrapper C++ do CMPI - biblioteka współdzielona z implementacją
+wsparcia C++.
+
+%package cpp-devel
+Summary:	Header files for CMPI C++ wrapper
+Summary(pl.UTF-8):	Pliki nagłówkowe wrappera C++ do CMPI
 Group:		Development/Libraries
+Requires:	%{name}-cpp = %{version}-%{release}
 Requires:	%{name}-devel = %{version}-%{release}
+Requires:	libstdc++-devel
 
-%description static
-Static SBLIM CMPI library.
+%description cpp-devel
+Header files for CMPI C++ wrapper.
 
-%description static -l pl.UTF-8
-Statyczna biblioteka SBLIM CMPI.
+%description cpp-devel -l pl.UTF-8
+Pliki nagłówkowe wrappera C++ do CMPI.
+
+%package cpp-static
+Summary:	Static CMPI C++ wrapper library
+Summary(pl.UTF-8):	Statyczna biblioteka wrappera C++ do CMPI
+Group:		Development/Libraries
+Requires:	%{name}-cpp-devel = %{version}-%{release}
+Obsoletes:	sblim-cmpi-static
+
+%description cpp-static
+Static CMPI C++ wrapper library.
+
+%description cpp-static -l pl.UTF-8
+Statyczna biblioteka wrappera C++ do CMPI.
 
 %prep
 %setup -q -n %{name}-devel-%{version}
@@ -70,21 +98,31 @@ rm -rf $RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-p /sbin/ldconfig
-%postun	-p /sbin/ldconfig
-
-%files
-%defattr(644,root,root,755)
-%doc AUTHORS COPYING ChangeLog NEWS README
-%attr(755,root,root) %{_libdir}/libcmpiCppImpl.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libcmpiCppImpl.so.0
+%post	cpp -p /sbin/ldconfig
+%postun	cpp -p /sbin/ldconfig
 
 %files devel
 %defattr(644,root,root,755)
+%doc AUTHORS COPYING ChangeLog NEWS README
+%dir %{_includedir}/cmpi
+%{_includedir}/cmpi/cmpidt.h
+%{_includedir}/cmpi/cmpift.h
+%{_includedir}/cmpi/cmpimacs.h
+%{_includedir}/cmpi/cmpios.h
+%{_includedir}/cmpi/cmpipl.h
+
+%files cpp
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libcmpiCppImpl.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libcmpiCppImpl.so.0
+
+%files cpp-devel
+%defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libcmpiCppImpl.so
 %{_libdir}/libcmpiCppImpl.la
-%{_includedir}/cmpi
+%{_includedir}/cmpi/Cmpi*.h
+%{_includedir}/cmpi/Linkage.h
 
-%files static
+%files cpp-static
 %defattr(644,root,root,755)
 %{_libdir}/libcmpiCppImpl.a
