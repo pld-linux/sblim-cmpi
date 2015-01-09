@@ -1,12 +1,12 @@
 Summary:	SBLIM CMPI Development Package
 Summary(pl.UTF-8):	Pakiet programistyczny SBLIM SMPI
 Name:		sblim-cmpi
-Version:	2.0.2
-Release:	2
+Version:	2.0.3
+Release:	1
 License:	Eclipse Public License v1.0
 Group:		Libraries
 Source0:	http://downloads.sourceforge.net/sblim/%{name}-devel-%{version}.tar.bz2
-# Source0-md5:	f53dd04e611f7e7b2c1c5d75f3698727
+# Source0-md5:	b934616f88a848f17ca3cf1b9e792cbf
 URL:		http://sblim.sourceforge.net/
 BuildRequires:	libstdc++-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -94,6 +94,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+# packaged as %doc
+%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/%{name}-devel-%{version}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
