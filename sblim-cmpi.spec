@@ -2,7 +2,7 @@ Summary:	SBLIM CMPI Development Package
 Summary(pl.UTF-8):	Pakiet programistyczny SBLIM SMPI
 Name:		sblim-cmpi
 Version:	2.0.3
-Release:	1
+Release:	2
 License:	Eclipse Public License v1.0
 Group:		Libraries
 Source0:	http://downloads.sourceforge.net/sblim/%{name}-devel-%{version}.tar.bz2
